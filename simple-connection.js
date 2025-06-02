@@ -1,6 +1,6 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
 
-export const endpoint = "wss://westend-asset-hub-rpc.polkadot.io:443";
+export const endpoint = "wss://testnet-passet-hub.polkadot.io";
 
 export async function simpleConnection() {
   const provider = new WsProvider(endpoint);

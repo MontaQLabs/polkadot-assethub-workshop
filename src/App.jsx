@@ -3,6 +3,8 @@ import { simpleConnection, endpoint } from "../simple-connection.js";
 import WalletSelection from "../wallet-selection.jsx";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 
+const RECIPIENT="5Ggfb9LDwGQtimCkYr9ip737FxCvyL2ki6rmwXdn8wB5u5SZ";
+
 function App() {
   const [isConnecting, setIsConnecting] = useState(false);
   const [connectionInfo, setConnectionInfo] = useState(null);
@@ -68,29 +70,34 @@ function App() {
     console.log("Selected account for dApp:", accountData);
   };
 
-  const simulateTransaction = async () => {
+  const transferTransaction = async () => {
     if (!selectedAccount) {
       setDemoAction("❌ Please select an account first!");
       return;
     }
 
     setIsProcessing(true);
-    setDemoAction("🔄 Preparing transaction...");
+    setDemoAction("🔄 Executing transaction...");
 
     try {
-      // Simulate transaction preparation
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      setDemoAction(
-        `✅ Ready to sign with ${
-          selectedAccount.account.meta.name || "selected account"
-        }! In a real dApp, this would create and sign a transaction.`
+      const api = await ApiPromise.create({
+        provider: new WsProvider(endpoint),
+      });
+      
+      // Wait for the API to be ready
+      await api.isReady;
+      
+      // Use balances.transferKeepAlive instead of balances.transfer for Asset Hub
+      const transactionExtrinsic = api.tx.balances.transferKeepAlive(
+        RECIPIENT,
+        1 * 10 ** 10
       );
 
-      // In a real dApp, you would use the selectedAccount.signer here:
-      // const tx = await api.tx.balances.transfer(recipient, amount);
-      // await tx.signAndSend(selectedAccount.account.address, { signer: selectedAccount.signer });
+      await transactionExtrinsic.signAndSend(selectedAccount.account.address, { signer: selectedAccount.signer });
+      
+      setDemoAction("✅ Transaction submitted successfully!");
     } catch (error) {
+      console.error("Transaction error:", error);
       setDemoAction(`❌ Demo failed: ${error.message}`);
     } finally {
       setIsProcessing(false);
@@ -111,11 +118,15 @@ function App() {
         provider: new WsProvider(endpoint),
       });
 
+      // Wait for the API to be ready
+      await api.isReady;
+
       const { data: balance } = await api.query.system.account(
         selectedAccount.account.address
       );
-      setDemoAction(`💰 Account balance: ${balance.free / 10 ** 12} WND`);
+      setDemoAction(`💰 Account balance: ${balance.free / 10 ** 10} PAS`);
     } catch (error) {
+      console.error("Balance check error:", error);
       setDemoAction(`❌ Balance check failed: ${error.message}`);
     } finally {
       setIsProcessing(false);
@@ -128,7 +139,7 @@ function App() {
       <div className="card">
         <h1 className="title">Polkadot Simple Connection</h1>
         <p className="subtitle">
-          Connect to the Westend testnet and retrieve chain information
+          Connect to the Paseo Asset Hub and retrieve chain information
         </p>
 
         <button
@@ -137,7 +148,7 @@ function App() {
           disabled={isConnecting}
         >
           {isConnecting && <div className="loading"></div>}
-          {isConnecting ? "Connecting..." : "Connect to Westend Asset Hub"}
+          {isConnecting ? "Connecting..." : "Connect to Paseo Asset Hub"}
         </button>
 
         {error && (
@@ -206,11 +217,11 @@ function App() {
           <div className="demo-actions-grid">
             <button
               className="demo-action-button transaction-demo"
-              onClick={simulateTransaction}
+              onClick={transferTransaction}
               disabled={isProcessing}
             >
               {isProcessing && <div className="loading"></div>}
-              📝 Simulate Transaction
+              📝 Simple Transfer
             </button>
 
             <button
