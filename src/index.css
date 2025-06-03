@@ -1131,4 +1131,212 @@ body {
   .active-account-summary h3 {
     font-size: 1.1rem;
   }
+}
+
+.active-account-summary h3 {
+  font-size: 1.5rem;
+}
+
+/* Smart Contract Call Styles */
+.contract-input-section {
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.input-label {
+  display: block;
+  font-weight: 600;
+  color: #4ecdc4;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.contract-input {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  font-family: monospace;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+.contract-input:focus {
+  outline: none;
+  border-color: #4ecdc4;
+  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
+}
+
+.contract-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.contract-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.contract-demo {
+  background: linear-gradient(45deg, #9b59b6, #8e44ad);
+}
+
+.contract-demo:hover {
+  background: linear-gradient(45deg, #8e44ad, #7d3c98);
+}
+
+.contract-help {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: left;
+}
+
+.contract-help h3 {
+  color: #4ecdc4;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.contract-help ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contract-help li {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  line-height: 1.5;
+}
+
+.contract-help li:before {
+  content: "▶";
+  position: absolute;
+  left: 0;
+  color: #4ecdc4;
+  font-size: 0.8rem;
+}
+
+.contract-help code {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+/* Tab interface styles */
+.contract-tabs {
+  display: flex;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tab-button {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tab-button:last-child {
+  border-right: none;
+}
+
+.tab-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tab-button.active {
+  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  color: white;
+}
+
+.tab-button.active:hover {
+  background: linear-gradient(45deg, #44a08d, #4ecdc4);
+}
+
+.tab-content {
+  margin-top: 1rem;
+}
+
+/* Warning message styling */
+.warning {
+  background: rgba(255, 193, 7, 0.2);
+  border: 1px solid rgba(255, 193, 7, 0.5);
+  color: #ffc107;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Store-specific button styling */
+.store-demo {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+}
+
+.store-demo:hover {
+  background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+}
+
+.store-demo:disabled {
+  background: rgba(255, 107, 107, 0.3);
+}
+
+@media (max-width: 768px) {
+  .contract-input-section {
+    flex-direction: column;
+  }
+
+  .contract-input {
+    font-size: 16px;
+  }
+
+  .contract-help {
+    padding: 1rem;
+  }
+
+  .contract-help h3 {
+    font-size: 1.2rem;
+  }
+
+  .contract-help li {
+    font-size: 0.9rem;
+  }
+
+  .contract-tabs {
+    flex-direction: column;
+  }
+
+  .tab-button {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .tab-button:last-child {
+    border-bottom: none;
+  }
+
+  .warning {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
 } 
