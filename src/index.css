@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #0a0a0a;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -26,12 +26,12 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
 }
 
 #root {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -40,29 +40,88 @@ body {
 .app {
   padding: 2rem;
   min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 2rem;
+  align-items: start;
+  justify-items: center;
+}
+
+/* Large screens: 2-column grid */
+@media (min-width: 1200px) {
+  .app {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    justify-items: stretch;
+  }
+  
+  .card {
+    max-width: none;
+    width: 100%;
+  }
+  
+  .wallet-selection {
+    max-width: none;
+    width: 100%;
+  }
+  
+  /* Grid ordering for better content flow */
+  .card:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  
+  .wallet-selection {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+  
+  .card:nth-child(3) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  
+  .card:nth-child(4) {
+    grid-column: 1 / span 2;
+    grid-row: 3;
+  }
+}
+
+/* Medium screens: single column with better spacing */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .app {
+    gap: 2.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .card {
+    max-width: 800px;
+  }
+  
+  .wallet-selection {
+    max-width: 900px;
+  }
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(40, 40, 40, 0.8);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(100, 100, 100, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
   max-width: 600px;
   width: 100%;
+  height: fit-content;
 }
 
 .title {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  background: linear-gradient(45deg, #ffffff, #b0b0b0);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -72,10 +131,11 @@ body {
   font-size: 1.2rem;
   margin-bottom: 2rem;
   opacity: 0.8;
+  color: #d0d0d0;
 }
 
 .connect-button {
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  background: linear-gradient(45deg, #404040, #606060);
   border: none;
   border-radius: 50px;
   padding: 1rem 2rem;
@@ -89,7 +149,8 @@ body {
 
 .connect-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(45deg, #505050, #707070);
 }
 
 .connect-button:disabled {
@@ -114,11 +175,11 @@ body {
 }
 
 .connection-info {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 30, 30, 0.8);
   border-radius: 15px;
   padding: 1.5rem;
   margin-top: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(80, 80, 80, 0.5);
   text-align: left;
 }
 
@@ -133,30 +194,31 @@ body {
 
 .info-label {
   font-weight: 600;
-  color: #4ecdc4;
+  color: #c0c0c0;
 }
 
 .info-value {
   font-family: monospace;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
   padding: 0.25rem 0.5rem;
   border-radius: 5px;
   word-break: break-all;
+  color: #f0f0f0;
 }
 
 .error {
-  background: rgba(255, 107, 107, 0.2);
-  border: 1px solid rgba(255, 107, 107, 0.5);
-  color: #ff6b6b;
+  background: rgba(60, 20, 20, 0.8);
+  border: 1px solid rgba(120, 40, 40, 0.8);
+  color: #ff9999;
   padding: 1rem;
   border-radius: 10px;
   margin-top: 1rem;
 }
 
 .success {
-  background: rgba(78, 205, 196, 0.2);
-  border: 1px solid rgba(78, 205, 196, 0.5);
-  color: #4ecdc4;
+  background: rgba(20, 60, 20, 0.8);
+  border: 1px solid rgba(40, 120, 40, 0.8);
+  color: #99ff99;
   padding: 1rem;
   border-radius: 10px;
   margin-top: 1rem;
@@ -189,22 +251,22 @@ body {
   font-size: 2rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  background: linear-gradient(45deg, #f0f0f0, #a0a0a0);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .wallet-button {
-  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  background: linear-gradient(45deg, #505050, #707070);
 }
 
 .wallet-button:hover {
-  background: linear-gradient(45deg, #3eb3ab, #3a8a7a);
+  background: linear-gradient(45deg, #606060, #808080);
 }
 
 .disconnect-button {
-  background: linear-gradient(45deg, #ff9a9e, #fecfef);
+  background: linear-gradient(45deg, #606060, #808080);
   border: none;
   border-radius: 50px;
   padding: 1rem 2rem;
@@ -218,38 +280,38 @@ body {
 
 .disconnect-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(45deg, #ff8a8e, #feb2ef);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(45deg, #707070, #909090);
 }
 
 .wallet-info {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 30, 30, 0.8);
   border-radius: 15px;
   padding: 1.5rem;
   margin-top: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(80, 80, 80, 0.5);
   text-align: left;
 }
 
 .accounts-header {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(78, 205, 196, 0.3);
+  border-bottom: 1px solid rgba(120, 120, 120, 0.3);
 }
 
 .account-item {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(25, 25, 25, 0.8);
   border-radius: 10px;
   padding: 1rem;
   margin: 1rem 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(70, 70, 70, 0.5);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .account-item:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  background: rgba(35, 35, 35, 0.8);
 }
 
 .account-header {
@@ -263,13 +325,13 @@ body {
 
 .account-name {
   font-weight: 600;
-  color: #4ecdc4;
+  color: #e0e0e0;
   font-size: 1.1rem;
 }
 
 .account-source {
-  background: rgba(78, 205, 196, 0.2);
-  color: #4ecdc4;
+  background: rgba(80, 80, 80, 0.5);
+  color: #d0d0d0;
   padding: 0.25rem 0.5rem;
   border-radius: 15px;
   font-size: 0.8rem;
@@ -297,9 +359,9 @@ body {
 .wallet-help {
   margin-top: 1rem;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 30, 30, 0.8);
   border-radius: 10px;
-  border: 1px solid rgba(255, 107, 107, 0.3);
+  border: 1px solid rgba(100, 100, 100, 0.3);
 }
 
 .wallet-help p {
@@ -308,13 +370,14 @@ body {
 }
 
 .wallet-help a {
-  color: #4ecdc4;
+  color: #b0b0b0;
   text-decoration: none;
   font-weight: 600;
 }
 
 .wallet-help a:hover {
   text-decoration: underline;
+  color: #d0d0d0;
 }
 
 @media (max-width: 768px) {
@@ -342,15 +405,16 @@ body {
 
 /* Wallet Selection Component Styles */
 .wallet-selection {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(40, 40, 40, 0.8);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(100, 100, 100, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
   max-width: 800px;
   width: 100%;
   margin: 1rem 0;
+  height: fit-content;
 }
 
 .wallet-selection-header {
@@ -363,11 +427,11 @@ body {
 }
 
 .wallet-help {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(25, 25, 25, 0.8);
   border-radius: 15px;
   padding: 1.5rem;
   margin-top: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(70, 70, 70, 0.5);
 }
 
 .wallet-help ul {
@@ -381,14 +445,14 @@ body {
 }
 
 .wallet-help a {
-  color: #4ecdc4;
+  color: #b0b0b0;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease;
 }
 
 .wallet-help a:hover {
-  color: #44a08d;
+  color: #d0d0d0;
   text-decoration: underline;
 }
 
@@ -400,12 +464,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(78, 205, 196, 0.2);
-  border: 1px solid rgba(78, 205, 196, 0.5);
+  background: rgba(40, 80, 40, 0.3);
+  border: 1px solid rgba(80, 160, 80, 0.5);
   border-radius: 15px;
   padding: 1rem;
   margin-bottom: 1.5rem;
-  color: #4ecdc4;
+  color: #90ff90;
   font-weight: 600;
 }
 
@@ -414,8 +478,8 @@ body {
 }
 
 .selected-account-banner {
-  background: linear-gradient(135deg, rgba(78, 205, 196, 0.2), rgba(68, 160, 141, 0.2));
-  border: 2px solid rgba(78, 205, 196, 0.5);
+  background: linear-gradient(135deg, rgba(60, 60, 60, 0.5), rgba(80, 80, 80, 0.5));
+  border: 2px solid rgba(120, 120, 120, 0.5);
   border-radius: 15px;
   padding: 1.5rem;
   margin-bottom: 2rem;
@@ -430,7 +494,7 @@ body {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #4ecdc4, #44a08d);
+  background: linear-gradient(90deg, #a0a0a0, #c0c0c0);
 }
 
 .selected-indicator {
@@ -438,7 +502,7 @@ body {
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 1rem;
-  color: #4ecdc4;
+  color: #d0d0d0;
   font-weight: 600;
   font-size: 0.9rem;
   text-transform: uppercase;
@@ -473,15 +537,15 @@ body {
 }
 
 .accounts-title {
-  color: #4ecdc4;
+  color: #d0d0d0;
   font-size: 1.3rem;
   margin-bottom: 1rem;
   text-align: center;
 }
 
 .account-card {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(30, 30, 30, 0.8);
+  border: 1px solid rgba(80, 80, 80, 0.5);
   border-radius: 15px;
   padding: 1.5rem;
   margin-bottom: 1rem;
@@ -494,15 +558,15 @@ body {
 }
 
 .account-card:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(78, 205, 196, 0.3);
+  background: rgba(40, 40, 40, 0.8);
+  border-color: rgba(120, 120, 120, 0.5);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
 .account-card.selected {
-  background: rgba(78, 205, 196, 0.15);
-  border-color: rgba(78, 205, 196, 0.5);
+  background: rgba(50, 50, 50, 0.8);
+  border-color: rgba(140, 140, 140, 0.8);
   cursor: default;
 }
 
@@ -530,8 +594,8 @@ body {
 }
 
 .account-source {
-  background: rgba(78, 205, 196, 0.2);
-  color: #4ecdc4;
+  background: rgba(80, 80, 80, 0.5);
+  color: #d0d0d0;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -548,13 +612,13 @@ body {
 }
 
 .address-label {
-  color: #4ecdc4;
+  color: #c0c0c0;
   font-weight: 500;
 }
 
 .address-value {
   font-family: monospace;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
   padding: 0.25rem 0.5rem;
   border-radius: 5px;
   color: white;
@@ -575,7 +639,7 @@ body {
 }
 
 .select-button {
-  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  background: linear-gradient(45deg, #505050, #707070);
   border: none;
   border-radius: 25px;
   padding: 0.7rem 1.5rem;
@@ -588,18 +652,19 @@ body {
 
 .select-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(78, 205, 196, 0.3);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #606060, #808080);
 }
 
 .selected-badge {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(78, 205, 196, 0.2);
-  border: 1px solid rgba(78, 205, 196, 0.5);
+  background: rgba(80, 80, 80, 0.5);
+  border: 1px solid rgba(120, 120, 120, 0.5);
   border-radius: 25px;
   padding: 0.7rem 1.5rem;
-  color: #4ecdc4;
+  color: #d0d0d0;
   font-weight: 600;
   font-size: 0.9rem;
 }
@@ -610,15 +675,15 @@ body {
 }
 
 .extension-info {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(25, 25, 25, 0.8);
   border-radius: 15px;
   padding: 1.5rem;
   margin-top: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(70, 70, 70, 0.5);
 }
 
 .extension-info h4 {
-  color: #4ecdc4;
+  color: #d0d0d0;
   margin-bottom: 1rem;
   font-size: 1rem;
 }
@@ -630,19 +695,34 @@ body {
 }
 
 .extension-badge {
-  background: rgba(68, 160, 141, 0.2);
-  color: #44a08d;
+  background: rgba(60, 60, 60, 0.5);
+  color: #b0b0b0;
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 500;
-  border: 1px solid rgba(68, 160, 141, 0.3);
+  border: 1px solid rgba(100, 100, 100, 0.3);
 }
 
 /* Mobile responsiveness for wallet selection */
 @media (max-width: 768px) {
   .wallet-selection {
     padding: 1.5rem;
+    margin: 0.5rem 0;
+  }
+  
+  .card {
+    padding: 1.5rem;
+    margin: 0.5rem 0;
+  }
+  
+  .app {
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+  
+  #root {
+    padding: 1rem;
   }
   
   .account-card {
@@ -688,13 +768,23 @@ body {
 .demo-container {
   padding: 2rem;
   min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 2rem;
+  align-items: start;
+  justify-items: center;
   max-width: 1000px;
   margin: 0 auto;
+}
+
+/* Large screens: 2-column layout for demo container */
+@media (min-width: 1200px) {
+  .demo-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    justify-items: stretch;
+    max-width: none;
+  }
 }
 
 .demo-header {
@@ -707,7 +797,7 @@ body {
 }
 
 .section-title {
-  color: #4ecdc4;
+  color: #d0d0d0;
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
   display: flex;
@@ -729,7 +819,7 @@ body {
 }
 
 .demo-button {
-  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  background: linear-gradient(45deg, #505050, #707070);
   border: none;
   border-radius: 25px;
   padding: 0.8rem 1.5rem;
@@ -745,27 +835,36 @@ body {
 
 .demo-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(78, 205, 196, 0.3);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #606060, #808080);
 }
 
 .transaction-button {
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  background: linear-gradient(45deg, #404040, #606060);
+}
+
+.transaction-button:hover {
+  background: linear-gradient(45deg, #505050, #707070);
 }
 
 .clear-button {
-  background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+  background: linear-gradient(45deg, #606060, #808080);
+}
+
+.clear-button:hover {
+  background: linear-gradient(45deg, #707070, #909090);
 }
 
 .demo-result {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 30, 30, 0.8);
   border-radius: 10px;
   padding: 1rem;
   margin: 1rem 0;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(80, 80, 80, 0.5);
 }
 
 .demo-result strong {
-  color: #4ecdc4;
+  color: #d0d0d0;
 }
 
 .demo-result p {
@@ -774,15 +873,15 @@ body {
 }
 
 .account-details {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(25, 25, 25, 0.8);
   border-radius: 15px;
   padding: 1.5rem;
   margin-top: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(70, 70, 70, 0.5);
 }
 
 .account-details h4 {
-  color: #4ecdc4;
+  color: #d0d0d0;
   margin-bottom: 1rem;
   font-size: 1.1rem;
 }
@@ -797,7 +896,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(80, 80, 80, 0.5);
   flex-wrap: wrap;
   gap: 0.5rem;
 }
@@ -807,7 +906,7 @@ body {
 }
 
 .detail-label {
-  color: #4ecdc4;
+  color: #c0c0c0;
   font-weight: 500;
   flex-shrink: 0;
 }
@@ -823,7 +922,7 @@ body {
 .detail-value.mono {
   font-family: monospace;
   font-size: 0.9rem;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
   padding: 0.25rem 0.5rem;
   border-radius: 5px;
   word-break: break-all;
@@ -844,14 +943,14 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(25, 25, 25, 0.8);
   border-radius: 10px;
   padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(70, 70, 70, 0.5);
 }
 
 .step-number {
-  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  background: linear-gradient(45deg, #606060, #808080);
   color: white;
   width: 2rem;
   height: 2rem;
@@ -869,19 +968,19 @@ body {
 }
 
 .step-content h4 {
-  color: #4ecdc4;
+  color: #d0d0d0;
   margin-bottom: 0.5rem;
   font-size: 1rem;
 }
 
 .code-snippet {
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(80, 80, 80, 0.5);
   border-radius: 8px;
   padding: 1rem;
-  font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+  font-family: 'Courier New', monospace;
   font-size: 0.85rem;
-  color: #e6fffa;
+  color: #e0e0e0;
   display: block;
   white-space: pre-wrap;
   overflow-x: auto;
@@ -936,7 +1035,7 @@ body {
 }
 
 .demo-action-button {
-  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  background: linear-gradient(45deg, #505050, #707070);
   border: none;
   border-radius: 25px;
   padding: 1rem 1.5rem;
@@ -954,7 +1053,8 @@ body {
 
 .demo-action-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(78, 205, 196, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #606060, #808080);
 }
 
 .demo-action-button:disabled {
@@ -964,24 +1064,24 @@ body {
 }
 
 .transaction-demo {
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  background: linear-gradient(45deg, #404040, #606060);
 }
 
 .transaction-demo:hover {
-  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+  background: linear-gradient(45deg, #505050, #707070);
 }
 
 .balance-demo {
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: linear-gradient(45deg, #505050, #707070);
 }
 
 .balance-demo:hover {
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  background: linear-gradient(45deg, #606060, #808080);
 }
 
 .demo-result {
-  background: rgba(78, 205, 196, 0.15);
-  border: 1px solid rgba(78, 205, 196, 0.3);
+  background: rgba(40, 40, 40, 0.8);
+  border: 1px solid rgba(100, 100, 100, 0.3);
   border-radius: 15px;
   padding: 1rem;
   margin: 1.5rem 0;
@@ -989,7 +1089,7 @@ body {
 }
 
 .demo-result strong {
-  color: #4ecdc4;
+  color: #d0d0d0;
   font-size: 1rem;
 }
 
@@ -1000,15 +1100,15 @@ body {
 }
 
 .active-account-summary {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(25, 25, 25, 0.8);
   border-radius: 15px;
   padding: 1.5rem;
   margin: 2rem 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(70, 70, 70, 0.5);
 }
 
 .active-account-summary h3 {
-  color: #4ecdc4;
+  color: #d0d0d0;
   font-size: 1.2rem;
   margin-bottom: 1rem;
   display: flex;
@@ -1026,7 +1126,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(80, 80, 80, 0.5);
   flex-wrap: wrap;
   gap: 0.5rem;
 }
@@ -1036,7 +1136,7 @@ body {
 }
 
 .summary-label {
-  color: #4ecdc4;
+  color: #c0c0c0;
   font-weight: 500;
   flex-shrink: 0;
 }
@@ -1051,18 +1151,18 @@ body {
 
 .address-short {
   font-family: monospace;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
   padding: 0.25rem 0.5rem;
   border-radius: 5px;
   font-size: 0.9rem;
 }
 
 .integration-status {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(25, 25, 25, 0.8);
   border-radius: 15px;
   padding: 1.5rem;
   margin-top: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(70, 70, 70, 0.5);
 }
 
 .status-grid {
@@ -1076,14 +1176,14 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(30, 30, 30, 0.8);
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(70, 70, 70, 0.5);
   transition: background 0.2s ease;
 }
 
 .status-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(40, 40, 40, 0.8);
 }
 
 .status-icon {
@@ -1146,7 +1246,7 @@ body {
 .input-label {
   display: block;
   font-weight: 600;
-  color: #4ecdc4;
+  color: #d0d0d0;
   margin-bottom: 0.5rem;
   font-size: 1rem;
 }
@@ -1154,9 +1254,9 @@ body {
 .contract-input {
   width: 100%;
   padding: 1rem;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(80, 80, 80, 0.5);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 30, 30, 0.8);
   color: white;
   font-size: 1rem;
   font-family: monospace;
@@ -1166,8 +1266,8 @@ body {
 
 .contract-input:focus {
   outline: none;
-  border-color: #4ecdc4;
-  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
+  border-color: #a0a0a0;
+  box-shadow: 0 0 0 3px rgba(160, 160, 160, 0.2);
 }
 
 .contract-input:disabled {
@@ -1180,24 +1280,24 @@ body {
 }
 
 .contract-demo {
-  background: linear-gradient(45deg, #9b59b6, #8e44ad);
+  background: linear-gradient(45deg, #404040, #606060);
 }
 
 .contract-demo:hover {
-  background: linear-gradient(45deg, #8e44ad, #7d3c98);
+  background: linear-gradient(45deg, #505050, #707070);
 }
 
 .contract-help {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(25, 25, 25, 0.8);
   border-radius: 15px;
   padding: 1.5rem;
   margin-top: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(70, 70, 70, 0.5);
   text-align: left;
 }
 
 .contract-help h3 {
-  color: #4ecdc4;
+  color: #d0d0d0;
   margin-bottom: 1rem;
   font-size: 1.2rem;
   font-weight: 600;
@@ -1220,16 +1320,17 @@ body {
   content: "▶";
   position: absolute;
   left: 0;
-  color: #4ecdc4;
+  color: #b0b0b0;
   font-size: 0.8rem;
 }
 
 .contract-help code {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.8);
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   font-family: 'Courier New', monospace;
   font-size: 0.9em;
+  color: #e0e0e0;
 }
 
 /* Tab interface styles */
@@ -1238,12 +1339,12 @@ body {
   margin-bottom: 2rem;
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(80, 80, 80, 0.5);
 }
 
 .tab-button {
   flex: 1;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 30, 30, 0.8);
   border: none;
   padding: 1rem;
   font-size: 1rem;
@@ -1251,7 +1352,7 @@ body {
   color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
   transition: all 0.3s ease;
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(80, 80, 80, 0.5);
 }
 
 .tab-button:last-child {
@@ -1259,17 +1360,17 @@ body {
 }
 
 .tab-button:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(40, 40, 40, 0.8);
   color: rgba(255, 255, 255, 0.9);
 }
 
 .tab-button.active {
-  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  background: linear-gradient(45deg, #606060, #808080);
   color: white;
 }
 
 .tab-button.active:hover {
-  background: linear-gradient(45deg, #44a08d, #4ecdc4);
+  background: linear-gradient(45deg, #707070, #909090);
 }
 
 .tab-content {
@@ -1278,9 +1379,9 @@ body {
 
 /* Warning message styling */
 .warning {
-  background: rgba(255, 193, 7, 0.2);
-  border: 1px solid rgba(255, 193, 7, 0.5);
-  color: #ffc107;
+  background: rgba(80, 60, 20, 0.5);
+  border: 1px solid rgba(160, 120, 40, 0.5);
+  color: #ffcc99;
   padding: 1rem;
   border-radius: 10px;
   margin: 1rem 0;
@@ -1290,15 +1391,15 @@ body {
 
 /* Store-specific button styling */
 .store-demo {
-  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  background: linear-gradient(45deg, #404040, #505050);
 }
 
 .store-demo:hover {
-  background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+  background: linear-gradient(45deg, #505050, #606060);
 }
 
 .store-demo:disabled {
-  background: rgba(255, 107, 107, 0.3);
+  background: rgba(64, 64, 64, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -1328,7 +1429,7 @@ body {
 
   .tab-button {
     border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(80, 80, 80, 0.5);
   }
 
   .tab-button:last-child {

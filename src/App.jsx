@@ -4,7 +4,7 @@ import { callRetrieve, storeValue } from "../simple-contract-calls.js";
 import WalletSelection from "../wallet-selection.jsx";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { ethersProvider } from "../ethersProvider.js";
-import { RECIPIENT, WND_DECIMALS, WND_SYMBOL, ASSET_HUB_WS, ASSET_HUB_RPC, PASSET_HUB_WS, PASSEO_SYMBOL, PASSEO_DECIMALS } from "../constants.js";
+import { RECIPIENT, PASSET_HUB_WS, PASSEO_SYMBOL, PASSEO_DECIMALS } from "../constants.js";
 
 function App() {
   const [isConnecting, setIsConnecting] = useState(false);
@@ -17,6 +17,7 @@ function App() {
   // Demo functionality state
   const [demoAction, setDemoAction] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [signer, setSigner] = useState(null);
 
   // Contract call state
   const [contractAddress, setContractAddress] = useState("");
@@ -48,27 +49,24 @@ function App() {
         originalLog(...args);
       };
 
-      await simpleConnection();
+      const { chain, nodeName, noeVersion } = await simpleConnection();
 
       // Restore original console.log
       console.log = originalLog;
 
       // Parse the captured output to extract information
-      const match = capturedOutput.match(
-        /You are connected to chain (.+) using (.+) v(.+)/
-      );
-      if (match) {
+      if (chain && nodeName && noeVersion) {
         setConnectionInfo({
-          chain: match[1],
-          nodeName: match[2],
-          nodeVersion: match[3],
-          endpoint: ASSET_HUB_RPC,
+          chain,
+          nodeName,
+          noeVersion,
+          endpoint: endpoint,
           timestamp: new Date().toLocaleString(),
         });
       } else {
         setConnectionInfo({
-          message: capturedOutput || "Connected successfully",
-          endpoint: ASSET_HUB_RPC,
+          message: capturedOutput,
+          endpoint: endpoint,
           timestamp: new Date().toLocaleString(),
         });
       }
@@ -84,6 +82,7 @@ function App() {
     setSelectedAccount(accountData);
     setDemoAction("");
     console.log("Selected account for dApp:", accountData);
+    setSigner(accountData.signer);
   };
 
   const transferTransaction = async () => {
@@ -109,7 +108,7 @@ function App() {
         1 * PASSEO_DECIMALS
       );
 
-      await transactionExtrinsic.signAndSend(selectedAccount.account.address, { signer: selectedAccount.injector.signer });
+      await transactionExtrinsic.signAndSend(selectedAccount.account.address, { signer });
       
       setDemoAction("✅ Transaction submitted successfully!");
     } catch (error) {
@@ -235,7 +234,7 @@ function App() {
       <div className="card">
         <h1 className="title">Polkadot Simple Connection</h1>
         <p className="subtitle">
-          Connect to the Westend Asset Hub and retrieve chain information
+          Connect to the Passeo Asset Hub and retrieve chain information
         </p>
 
         <button
@@ -244,7 +243,7 @@ function App() {
           disabled={isConnecting}
         >
           {isConnecting && <div className="loading"></div>}
-          {isConnecting ? "Connecting..." : "Connect to Westend Asset Hub"}
+          {isConnecting ? "Connecting..." : "Connect to Passeo Asset Hub"}
         </button>
 
         {error && (

@@ -1,7 +1,7 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { ASSET_HUB_WS } from "./constants.js";
+import { PASSET_HUB_WS } from "./constants.js";
 
-export const endpoint = ASSET_HUB_WS;
+export const endpoint = PASSET_HUB_WS;
 
 export async function simpleConnection() {
   const provider = new WsProvider(endpoint);
@@ -14,7 +14,5 @@ export async function simpleConnection() {
     api.rpc.system.version(),
   ]);
 
-  console.log(
-    `You are connected to chain ${chain.toString()} using ${nodeName.toString()} v${noeVersion.toString()}`
-  );
+  return { chain, nodeName, noeVersion };
 }

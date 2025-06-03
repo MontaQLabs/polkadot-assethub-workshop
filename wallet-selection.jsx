@@ -108,27 +108,6 @@ const WalletSelection = ({ onAccountSelect, selectedAccount }) => {
             {isConnecting && <div className="loading"></div>}
             {isConnecting ? 'Connecting...' : '🔗 Connect Wallet'}
           </button>
-
-          <div className="wallet-help">
-            <p>💡 <strong>Supported Wallets:</strong></p>
-            <ul>
-              <li>
-                <a href="https://polkadot.js.org/extension/" target="_blank" rel="noopener noreferrer">
-                  Polkadot.js Extension
-                </a>
-              </li>
-              <li>
-                <a href="https://talisman.xyz/" target="_blank" rel="noopener noreferrer">
-                  Talisman Wallet
-                </a>
-              </li>
-              <li>
-                <a href="https://www.subwallet.app/" target="_blank" rel="noopener noreferrer">
-                  SubWallet
-                </a>
-              </li>
-            </ul>
-          </div>
         </div>
       ) : (
         <div className="wallet-connected-section">
