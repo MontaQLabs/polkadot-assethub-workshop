@@ -356,6 +356,8 @@ This workshop provides a foundation for building more complex dApps:
 - [Asset Hub Documentation](https://wiki.polkadot.network/docs/learn-assets)
 - [Polkadot Extension Integration](https://polkadot.js.org/docs/extension)
 - [Ethers.js Documentation](https://docs.ethers.org/)
+- [Comprehensive Endpoint List](https://polkadot.js.org/docs/substrate)
+- [An Easier Way to Query On-chain Data](https://polkadot.js.org/docs/derives/)
 
 ## 🤝 Contributing
 
