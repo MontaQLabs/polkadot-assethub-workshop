@@ -84,6 +84,16 @@ body {
   position: relative;
 }
 
+.nav-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #ffffff, #b0b0b0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .nav-tab:hover {
   color: rgba(255, 255, 255, 0.9);
   background: rgba(255, 255, 255, 0.05);

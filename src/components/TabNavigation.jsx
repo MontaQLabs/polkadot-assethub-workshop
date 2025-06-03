@@ -6,6 +6,7 @@ function TabNavigation() {
   return (
     <nav className="tab-navigation">
       <div className="nav-container">
+        <div className="nav-title">Asset Hub Hackathon Workshop</div>
         <div className="nav-tabs">
           <NavLink 
             to="/" 

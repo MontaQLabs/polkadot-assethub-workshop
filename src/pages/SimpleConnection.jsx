@@ -53,7 +53,7 @@ function SimpleConnection() {
   return (
     <div className="page-content">
       <div className="card">
-        <h1 className="title">Polkadot Simple Connection</h1>
+        <h1 className="title">Simple Connection</h1>
         <p className="subtitle">
           Connect to the Passeo Asset Hub and retrieve chain information
         </p>
