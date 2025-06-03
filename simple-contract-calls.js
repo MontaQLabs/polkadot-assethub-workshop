@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { ASSET_HUB_RPC, Storage_ABI } from './constants.js';
+import { PASSET_HUB_RPC, Storage_ABI } from './constants.js';
 
 /**
  * Simple function to call a Storage smart contract on Asset Hub
@@ -14,7 +14,7 @@ export async function callRetrieve(contractAddress) {
     
     // Step 1: Create a provider to connect to Asset Hub
     // Asset Hub supports EVM, so we can use ethers.js JsonRpcProvider
-    const provider = new ethers.JsonRpcProvider(ASSET_HUB_RPC);
+    const provider = new ethers.JsonRpcProvider(PASSET_HUB_RPC);
     
     console.log("📋 Setting up Storage contract interface...");
     
@@ -35,7 +35,7 @@ export async function callRetrieve(contractAddress) {
       storedValue: storedValue.toString(),
       storedValueBigInt: storedValue,
       networkInfo: {
-        rpcUrl: ASSET_HUB_RPC,
+        rpcUrl: PASSET_HUB_RPC,
         chainName: "Asset Hub (Westend)"
       },
       contractType: "Storage Contract",
@@ -100,7 +100,7 @@ export async function storeValue(contractAddress, valueToStore, signer) {
       storedValue: valueToStore.toString(),
       contractAddress,
       networkInfo: {
-        rpcUrl: ASSET_HUB_RPC,
+        rpcUrl: PASSET_HUB_RPC,
         chainName: "Asset Hub (Westend)"
       }
     };
@@ -126,4 +126,4 @@ export async function storeValue(contractAddress, valueToStore, signer) {
 }
 
 // Export the RPC endpoint and ABI for advanced users
-export { Storage_ABI, ASSET_HUB_RPC };
+export { Storage_ABI, PASSET_HUB_RPC };

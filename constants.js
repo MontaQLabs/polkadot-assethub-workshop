@@ -7,7 +7,7 @@ export const PASSET_HUB_RPC = "https://testnet-passet-hub-eth-rpc.polkadot.io/";
 export const PASSET_HUB_WS = "wss://testnet-passet-hub.polkadot.io";
 export const PASSEO_SYMBOL = "PAS";
 export const PASSEO_DECIMALS = 10 ** 10;
-export const CONTRACT_ADDRESS = "0x7FF8fACDF093b20107A9ca6BD8Fdde1bEdd14562";
+export const CONTRACT_ADDRESS = "0x94956d465f5E6434d6516Dd5A54B3AaA9d66170E";
 
 // Storage contract ABI - A simple contract that stores and retrieves numbers
 export const Storage_ABI = [
