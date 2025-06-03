@@ -16,8 +16,10 @@
     "@polkadot/api": "^16.1.1",
     "@polkadot/extension-dapp": "^0.52.3",
     "ethers": "^6.14.3",
+    "lucide-react": "^0.511.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.6.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

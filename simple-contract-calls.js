@@ -36,7 +36,7 @@ export async function callRetrieve(contractAddress) {
       storedValueBigInt: storedValue,
       networkInfo: {
         rpcUrl: PASSET_HUB_RPC,
-        chainName: "Asset Hub (Westend)"
+        chainName: "PASSET Hub"
       },
       contractType: "Storage Contract",
       functionCalled: "retrieve()"
@@ -101,7 +101,7 @@ export async function storeValue(contractAddress, valueToStore, signer) {
       contractAddress,
       networkInfo: {
         rpcUrl: PASSET_HUB_RPC,
-        chainName: "Asset Hub (Westend)"
+        chainName: "PASSET Hub"
       }
     };
     
