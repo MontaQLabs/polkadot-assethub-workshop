@@ -8,7 +8,7 @@
 // 4. ✅ Set metadata for the created asset
 // 5. ✅ Mint the asset to a desired account
 // 6. ✅ Create a pool with the asset
-// 7. Add liquidity to the pool
+// 7. ✅ Add liquidity to the pool
 // 8. Swap the asset
 // 9. Remove liquidity from the pool
 // 10. Delete the pool
@@ -22,6 +22,7 @@ import WalletSelection from "../components/wallet-selection.jsx";
 import SetMetadata from "../components/asset/set-metadata.jsx";
 import MintAssetToAccount from "../components/asset/mint-asset-to-account.jsx";
 import CreatePool from "../components/asset/create-pool.jsx";
+import AddLiquidity from "../components/asset/add-liquidity.jsx";
 
 export default function AssetConversion() {
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -88,14 +89,8 @@ export default function AssetConversion() {
           {/* Pool Creation Component */}
           <CreatePool selectedAccount={selectedAccount} />
           
-          <div className="feature-placeholder">
-            <div className="placeholder-content">
-              <div className="placeholder-icon">➕</div>
-              <h3>Add Liquidity</h3>
-              <p>Provide liquidity to existing pools and earn rewards</p>
-              <div className="coming-soon">Coming Soon</div>
-            </div>
-          </div>
+          {/* Add Liquidity Component */}
+          <AddLiquidity selectedAccount={selectedAccount} />
           
           <div className="feature-placeholder">
             <div className="placeholder-content">
