@@ -1,39 +1,35 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { Cable, Wallet, Code } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import ApiStatusIndicator from "./ApiStatusIndicator.jsx";
 
 function TabNavigation() {
+  const location = useLocation();
+
+  const tabs = [
+    { path: "/", label: "Simple Connection", icon: "🔗" },
+    { path: "/wallet", label: "Wallet Selection", icon: "👛" },
+    { path: "/asset-conversion", label: "Asset Conversion", icon: "🔄" },
+    { path: "/contracts", label: "Smart Contracts", icon: "📝" },
+  ];
+
   return (
     <nav className="tab-navigation">
-      <div className="nav-container">
-        <div className="nav-title">Asset Hub Hackathon Workshop</div>
-        <div className="nav-tabs">
-          <NavLink 
-            to="/" 
-            className={({ isActive }) => 
-              `nav-tab ${isActive ? 'active' : ''}`
-            }
-            end
+      <div className="nav-header">
+        <h1 className="app-title">🚀 Asset Hub Workshop</h1>
+        <ApiStatusIndicator />
+      </div>
+      
+      <div className="tab-list">
+        {tabs.map((tab) => (
+          <Link
+            key={tab.path}
+            to={tab.path}
+            className={`tab ${location.pathname === tab.path ? "active" : ""}`}
           >
-            <Cable className="nav-icon" /><div>Simple Connection</div>
-          </NavLink>
-          <NavLink 
-            to="/wallet" 
-            className={({ isActive }) => 
-              `nav-tab ${isActive ? 'active' : ''}`
-            }
-          >
-            <Wallet className="nav-icon" /><div>Wallet Selection</div>
-          </NavLink>
-          <NavLink 
-            to="/contracts" 
-            className={({ isActive }) => 
-              `nav-tab ${isActive ? 'active' : ''}`
-            }
-          >
-            <Code className="nav-icon" /><div>Smart Contracts</div>
-          </NavLink>
-        </div>
+            <span className="tab-icon">{tab.icon}</span>
+            <span className="tab-label">{tab.label}</span>
+          </Link>
+        ))}
       </div>
     </nav>
   );

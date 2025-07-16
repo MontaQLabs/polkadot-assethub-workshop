@@ -1,119 +1,115 @@
 import React, { useState } from "react";
-import { simpleConnection, endpoint } from "../../simple-connection.js";
+import { usePolkadotApi } from "../contexts/PolkadotApiContext.jsx";
 
 function SimpleConnection() {
-  const [isConnecting, setIsConnecting] = useState(false);
+  const { api, isConnecting, isConnected, error, chainInfo, connectApi } = usePolkadotApi();
   const [connectionInfo, setConnectionInfo] = useState(null);
-  const [error, setError] = useState(null);
+  const [localError, setLocalError] = useState(null);
 
   const handleConnect = async () => {
-    setIsConnecting(true);
-    setError(null);
+    setLocalError(null);
     setConnectionInfo(null);
 
     try {
-      // Capture console.log output from simpleConnection
-      const originalLog = console.log;
-      let capturedOutput = "";
-
-      console.log = (...args) => {
-        capturedOutput = args.join(" ");
-        originalLog(...args);
-      };
-
-      const { chain, nodeName, noeVersion } = await simpleConnection();
-
-      // Restore original console.log
-      console.log = originalLog;
-
-      // Parse the captured output to extract information
-      if (chain && nodeName && noeVersion) {
+      // Use the context API or trigger a fresh connection
+      const apiInstance = await connectApi();
+      
+      if (chainInfo) {
         setConnectionInfo({
-          chain,
-          nodeName,
-          noeVersion,
-          endpoint: endpoint,
-          timestamp: new Date().toLocaleString(),
-        });
-      } else {
-        setConnectionInfo({
-          message: capturedOutput,
-          endpoint: endpoint,
+          ...chainInfo,
           timestamp: new Date().toLocaleString(),
         });
       }
     } catch (err) {
       console.error("Connection failed:", err);
-      setError(err.message || "Failed to connect to the blockchain");
-    } finally {
-      setIsConnecting(false);
+      setLocalError(err.message || "Failed to connect to the blockchain");
+    }
+  };
+
+  // If already connected, show the chain info
+  const handleShowInfo = () => {
+    if (chainInfo) {
+      setConnectionInfo({
+        ...chainInfo,
+        timestamp: new Date().toLocaleString(),
+      });
     }
   };
 
   return (
-    <div className="page-content">
+    <div className="page">
       <div className="card">
-        <h1 className="title">Simple Connection</h1>
+        <h1 className="wallet-title">🔗 Simple Connection</h1>
         <p className="subtitle">
-          Connect to the Passeo Asset Hub and retrieve chain information
+          Connect to the Polkadot Asset Hub and retrieve basic chain
+          information
         </p>
 
-        <button
-          className="connect-button"
-          onClick={handleConnect}
-          disabled={isConnecting}
-        >
-          {isConnecting && <div className="loading"></div>}
-          {isConnecting ? "Connecting..." : "Connect to Passeo Asset Hub"}
-        </button>
+        <div className="connection-status">
+          <div className={`status-indicator ${isConnected ? 'connected' : 'disconnected'}`}>
+            {isConnected ? '🟢 Connected' : '🔴 Disconnected'}
+          </div>
+          {isConnected && chainInfo && (
+            <div className="chain-info-summary">
+              <strong>{chainInfo.chain}</strong> - {chainInfo.nodeName}
+            </div>
+          )}
+        </div>
 
-        {error && (
+        <div className="button-group">
+          <button
+            className="connect-button"
+            onClick={isConnected ? handleShowInfo : handleConnect}
+            disabled={isConnecting}
+          >
+            {isConnecting && <div className="loading"></div>}
+            {isConnecting 
+              ? 'Connecting...' 
+              : isConnected 
+                ? '📊 Show Chain Info' 
+                : '🔗 Connect to Asset Hub'
+            }
+          </button>
+        </div>
+
+        {(error || localError) && (
           <div className="error">
-            <strong>Connection Error:</strong> {error}
+            <strong>❌ Error:</strong> {error || localError}
           </div>
         )}
 
         {connectionInfo && (
-          <div className="success">
-            <strong>✅ Connection Successful!</strong>
-            <div className="connection-info">
+          <div className="results">
+            <h3>📊 Chain Information</h3>
+            <div className="info-grid">
               <div className="info-item">
-                <span className="info-label">Endpoint:</span>
-                <span className="info-value">{connectionInfo.endpoint}</span>
+                <strong>Chain:</strong> {connectionInfo.chain}
               </div>
-              {connectionInfo.chain && (
-                <div className="info-item">
-                  <span className="info-label">Chain:</span>
-                  <span className="info-value">{connectionInfo.chain}</span>
-                </div>
-              )}
-              {connectionInfo.nodeName && (
-                <div className="info-item">
-                  <span className="info-label">Node:</span>
-                  <span className="info-value">{connectionInfo.nodeName}</span>
-                </div>
-              )}
-              {connectionInfo.nodeVersion && (
-                <div className="info-item">
-                  <span className="info-label">Version:</span>
-                  <span className="info-value">
-                    {connectionInfo.nodeVersion}
-                  </span>
-                </div>
-              )}
               <div className="info-item">
-                <span className="info-label">Connected at:</span>
-                <span className="info-value">{connectionInfo.timestamp}</span>
+                <strong>Node:</strong> {connectionInfo.nodeName}
               </div>
-              {connectionInfo.message && !connectionInfo.chain && (
-                <div className="info-item">
-                  <span className="info-label">Message:</span>
-                  <span className="info-value">{connectionInfo.message}</span>
-                </div>
-              )}
+              <div className="info-item">
+                <strong>Version:</strong> {connectionInfo.nodeVersion}
+              </div>
+              <div className="info-item">
+                <strong>Endpoint:</strong> {connectionInfo.endpoint}
+              </div>
+              <div className="info-item">
+                <strong>Connected at:</strong> {connectionInfo.timestamp}
+              </div>
             </div>
           </div>
         )}
+
+        <div className="demo-section">
+          <h3>ℹ️ What this demonstrates:</h3>
+          <ul>
+            <li>🔗 WebSocket connection to Polkadot Asset Hub</li>
+            <li>📡 Retrieving basic chain metadata</li>
+            <li>🔄 Connection state management</li>
+            <li>⚡ Shared API instance across the application</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

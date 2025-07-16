@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import WalletSelection from "../../wallet-selection.jsx";
-import { ApiPromise, WsProvider } from "@polkadot/api";
-import { RECIPIENT, PASSET_HUB_WS, PASSEO_SYMBOL, PASSEO_DECIMALS } from "../../constants.js";
+import WalletSelection from "../components/wallet-selection.jsx";
+import { usePolkadotApi } from "../contexts/PolkadotApiContext.jsx";
+import { RECIPIENT, PASSEO_SYMBOL, PASSEO_DECIMALS } from "../../constants.js";
 
 function WalletSelectionPage() {
+  const { api, isConnected, ensureApi } = usePolkadotApi();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [demoAction, setDemoAction] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -13,7 +14,7 @@ function WalletSelectionPage() {
     setSelectedAccount(accountData);
     setDemoAction("");
     console.log("Selected account for dApp:", accountData);
-    setSigner(accountData.signer);
+    setSigner(accountData?.signer);
   };
 
   const transferTransaction = async () => {
@@ -22,19 +23,20 @@ function WalletSelectionPage() {
       return;
     }
 
+    if (!isConnected) {
+      setDemoAction("❌ API not connected. Please wait for connection...");
+      return;
+    }
+
     setIsProcessing(true);
     setDemoAction("🔄 Executing transaction...");
 
     try {
-      const api = await ApiPromise.create({
-        provider: new WsProvider(PASSET_HUB_WS),
-      });
-      
-      // Wait for the API to be ready
-      await api.isReady;
+      // Ensure API is ready
+      const apiInstance = await ensureApi();
       
       // Use balances.transferKeepAlive instead of balances.transfer for Asset Hub
-      const transactionExtrinsic = api.tx.balances.transferKeepAlive(
+      const transactionExtrinsic = apiInstance.tx.balances.transferKeepAlive(
         RECIPIENT,
         1 * PASSEO_DECIMALS
       );
@@ -56,18 +58,19 @@ function WalletSelectionPage() {
       return;
     }
 
+    if (!isConnected) {
+      setDemoAction("❌ API not connected. Please wait for connection...");
+      return;
+    }
+
     setIsProcessing(true);
     setDemoAction("🔍 Checking account balance...");
 
     try {
-      const api = await ApiPromise.create({
-        provider: new WsProvider(PASSET_HUB_WS),
-      });
+      // Ensure API is ready
+      const apiInstance = await ensureApi();
 
-      // Wait for the API to be ready
-      await api.isReady;
-
-      const { data: balance } = await api.query.system.account(
+      const { data: balance } = await apiInstance.query.system.account(
         selectedAccount.account.address
       );
       setDemoAction(`💰 Account balance: ${balance.free / PASSEO_DECIMALS} ${PASSEO_SYMBOL}`);
@@ -80,105 +83,59 @@ function WalletSelectionPage() {
   };
 
   return (
-    <div className="page-content">
-      <div className="wallet-page-layout">
-        {/* Left Side - Wallet Selection */}
-        <div className="wallet-selection-section">
-          <WalletSelection
-            onAccountSelect={handleAccountSelect}
-            selectedAccount={selectedAccount}
-          />
-        </div>
-
-        {/* Right Side - Demo Actions */}
+    <div className="page">
+      <div className="page-content">
+        <WalletSelection 
+          onAccountSelect={handleAccountSelect}
+          selectedAccount={selectedAccount}
+        />
+        
         {selectedAccount && (
-          <div className="demo-actions-section">
-            <div className="card">
-              <h2 className="wallet-title">🎯 dApp Demo Actions</h2>
-              <p className="subtitle">
-                Test dApp functionality with your selected account
-              </p>
-
-              <div className="demo-actions-grid">
-                <button
-                  className="demo-action-button transaction-demo"
-                  onClick={transferTransaction}
-                  disabled={isProcessing}
-                >
-                  {isProcessing && <div className="loading"></div>}
-                  📝 Simple Transfer
-                </button>
-
-                <button
-                  className="demo-action-button balance-demo"
-                  onClick={checkBalance}
-                  disabled={isProcessing}
-                >
-                  {isProcessing && <div className="loading"></div>}
-                  💰 Check Balance
-                </button>
-              </div>
-
-              {demoAction && (
-                <div className="demo-result">
-                  <strong>Demo Result:</strong>
-                  <p>{demoAction}</p>
-                </div>
-              )}
-
-              {/* Active Account Summary */}
-              <div className="active-account-summary">
-                <h3>🔗 Active Account</h3>
-                <div className="account-summary-grid">
-                  <div className="summary-item">
-                    <span className="summary-label">Name:</span>
-                    <span className="summary-value">
-                      {selectedAccount.account.meta.name || "Unnamed Account"}
-                    </span>
-                  </div>
-                  <div className="summary-item">
-                    <span className="summary-label">Wallet:</span>
-                    <span className="summary-value">
-                      {selectedAccount.account.meta.source}
-                    </span>
-                  </div>
-                  <div className="summary-item">
-                    <span className="summary-label">Address:</span>
-                    <span className="summary-value address-short">
-                      {`${selectedAccount.account.address.slice(
-                        0,
-                        12
-                      )}...${selectedAccount.account.address.slice(-12)}`}
-                    </span>
-                  </div>
-                  <div className="summary-item">
-                    <span className="summary-label">Ready to Sign:</span>
-                    <span className="summary-value">
-                      {selectedAccount.signer ? "✅ Yes" : "❌ No"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Integration Status */}
-              <div className="integration-status">
-                <div className="status-grid">
-                  <div className="status-item">
-                    <span className="status-icon">👛</span>
-                    <span className="status-text">
-                      Wallet: {selectedAccount ? "✅ Selected" : "❌ Not Selected"}
-                    </span>
-                  </div>
-                  <div className="status-item">
-                    <span className="status-icon">🔐</span>
-                    <span className="status-text">
-                      Signer:{" "}
-                      {selectedAccount?.signer ? "✅ Ready" : "❌ Not Ready"}
-                    </span>
-                  </div>
-                </div>
+          <div className="card">
+            <h2 className="wallet-title">🚀 Demo Actions</h2>
+            <p className="subtitle">
+              Test blockchain operations with your selected account
+            </p>
+            
+            <div className="selected-account-info">
+              <h3>Selected Account:</h3>
+              <div className="account-details">
+                <div><strong>Name:</strong> {selectedAccount.account.meta.name}</div>
+                <div><strong>Address:</strong> {selectedAccount.account.address}</div>
+                <div><strong>Source:</strong> {selectedAccount.account.meta.source}</div>
               </div>
             </div>
+
+            <div className="demo-actions">
+              <button
+                className="action-button"
+                onClick={checkBalance}
+                disabled={isProcessing || !isConnected}
+              >
+                {isProcessing ? "🔄 Checking..." : "💰 Check Balance"}
+              </button>
+              
+              <button
+                className="action-button"
+                onClick={transferTransaction}
+                disabled={isProcessing || !isConnected}
+              >
+                {isProcessing ? "🔄 Processing..." : "💸 Send Test Transaction"}
+              </button>
+            </div>
+
+            {!isConnected && (
+              <div className="warning">
+                ⚠️ Waiting for API connection to enable demo actions...
+              </div>
+            )}
+
+            {demoAction && (
+              <div className="demo-result">
+                <h3>Demo Result:</h3>
+                <div className="result-text">{demoAction}</div>
+              </div>
+            )}
           </div>
         )}
       </div>

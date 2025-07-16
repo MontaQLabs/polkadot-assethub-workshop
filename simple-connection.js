@@ -1,7 +1,7 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { PASSET_HUB_WS } from "./constants.js";
+import { ASSET_HUB_WS } from "./constants.js";
 
-export const endpoint = PASSET_HUB_WS;
+export const endpoint = ASSET_HUB_WS;
 
 export async function simpleConnection() {
   const provider = new WsProvider(endpoint);
