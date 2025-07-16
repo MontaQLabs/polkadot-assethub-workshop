@@ -14,6 +14,7 @@
 import { useState } from "react";
 import WalletSelection from "../components/wallet-selection.jsx";
 import AssetConversionDisplay from "../components/asset-conversion.jsx";
+import NextAvailableId from "../components/asset/next-available-id.jsx";
 
 export default function AssetConversion() {
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -31,6 +32,7 @@ export default function AssetConversion() {
           selectedAccount={selectedAccount}
         />
       </div>
+      <NextAvailableId />
       {selectedAccount && (
         <div>
           <AssetConversionDisplay selectedAccount={selectedAccount} />
