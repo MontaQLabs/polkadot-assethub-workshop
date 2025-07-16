@@ -23,6 +23,7 @@ import SetMetadata from "../components/asset/set-metadata.jsx";
 import MintAssetToAccount from "../components/asset/mint-asset-to-account.jsx";
 import CreatePool from "../components/asset/create-pool.jsx";
 import AddLiquidity from "../components/asset/add-liquidity.jsx";
+import QueryPool from "../components/asset/query-pool.jsx";
 
 export default function AssetConversion() {
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -88,6 +89,9 @@ export default function AssetConversion() {
           
           {/* Pool Creation Component */}
           <CreatePool selectedAccount={selectedAccount} />
+          
+          {/* Query Pool Component */}
+          <QueryPool selectedAccount={selectedAccount} />
           
           {/* Add Liquidity Component */}
           <AddLiquidity selectedAccount={selectedAccount} />
