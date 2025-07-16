@@ -8,11 +8,7 @@ function AssetConversionDisplay({ selectedAccount }) {
   const [events, setEvents] = useState([]);
   const [errors, setErrors] = useState([]);
   
-  // Asset discovery state
-  const [userAssets, setUserAssets] = useState([]);
-  const [isDiscovering, setIsDiscovering] = useState(false);
-  const [selectedAssetId, setSelectedAssetId] = useState("");
-  const [assetIdInput, setAssetIdInput] = useState("");
+
   
   // Pool and liquidity parameters
   const [poolParams, setPoolParams] = useState({
@@ -49,99 +45,6 @@ function AssetConversionDisplay({ selectedAccount }) {
   const getSwapPath = () => {
     // Returns Vec<StagingXcmV4Location> for the swap path
     return [getAssetLocation(poolParams.asset1), getAssetLocation(poolParams.asset2)];
-  };
-
-  // Asset discovery functions for specific assets based on user input
-  const discoverAsset = async () => {
-    if (!assetIdInput.trim()) {
-      setActionResult("❌ Please enter an asset ID to search for");
-      return;
-    }
-
-    const assetId = parseInt(assetIdInput.trim());
-    if (isNaN(assetId)) {
-      setActionResult("❌ Please enter a valid numeric asset ID");
-      return;
-    }
-
-    if (!isConnected || !api) {
-      setActionResult("❌ API not connected. Please wait for connection...");
-      return;
-    }
-
-    setIsDiscovering(true);
-    setActionResult(`🔍 Searching for asset ${assetId}...`);
-
-    try {
-      // Get asset details from the Assets pallet
-      const assetDetails = await api.query.assets.asset(assetId);
-      
-      if (!assetDetails || assetDetails.isNone) {
-        setActionResult(`❌ Asset ${assetId} not found on chain`);
-        return;
-      }
-
-      const details = assetDetails.unwrap();
-      
-      // Get asset metadata (symbol, name, decimals)
-      const metadataResult = await api.query.assets.metadata(assetId);
-      const metadata = metadataResult.isEmpty ? null : metadataResult;
-      
-      const symbol = metadata ? metadata.symbol.toUtf8() : `ASSET_${assetId}`;
-      const name = metadata ? metadata.name.toUtf8() : `Asset ${assetId}`;
-      const decimals = metadata ? metadata.decimals.toNumber() : 0;
-
-      const assetInfo = {
-        id: assetId,
-        symbol,
-        name,
-        decimals,
-        supply: details.supply.toString(),
-        accounts: details.accounts.toNumber(),
-        admin: details.admin.toString(),
-        // Create proper XCM location for this asset
-        location: {
-          parents: 0,
-          interior: {
-            X2: [
-              { PalletInstance: 50 }, // Assets pallet instance
-              { GeneralIndex: assetId }
-            ]
-          }
-        }
-      };
-
-      // Add to discovered assets (or replace if already exists)
-      setUserAssets(prevAssets => {
-        const existingIndex = prevAssets.findIndex(asset => asset.id === assetId);
-        if (existingIndex >= 0) {
-          const updatedAssets = [...prevAssets];
-          updatedAssets[existingIndex] = assetInfo;
-          return updatedAssets;
-        } else {
-          return [...prevAssets, assetInfo];
-        }
-      });
-
-      setActionResult(`✅ Asset ${assetId} (${assetInfo.symbol}) retrieved successfully!`);
-      setAssetIdInput(""); // Clear input after successful search
-    } catch (error) {
-      console.error("Asset discovery error:", error);
-      setActionResult(`❌ Asset search failed: ${error.message}`);
-    } finally {
-      setIsDiscovering(false);
-    }
-  };
-
-  const useAssetInPool = (asset, assetSlot) => {
-    const newPoolParams = { ...poolParams };
-    if (assetSlot === 'asset1') {
-      newPoolParams.asset1 = asset.location;
-    } else if (assetSlot === 'asset2') {
-      newPoolParams.asset2 = asset.location;
-    }
-    setPoolParams(newPoolParams);
-    setActionResult(`✅ Using ${asset.symbol} (ID: ${asset.id}) as ${assetSlot}`);
   };
 
   useEffect(() => {
@@ -292,53 +195,7 @@ function AssetConversionDisplay({ selectedAccount }) {
         </div>
       </div>
 
-      {/* Asset Discovery Section */}
-      <div className="demo-section">
-        <h3>🔍 Asset Discovery</h3>
-        <p>Search for assets by ID to use in conversions:</p>
-        
-        <div className="input-group">
-          <input
-            type="number"
-            placeholder="Enter Asset ID (e.g., 1984 for USDT)"
-            value={assetIdInput}
-            onChange={(e) => setAssetIdInput(e.target.value)}
-            className="asset-input"
-            disabled={isDiscovering || !isConnected}
-          />
-          <button
-            onClick={discoverAsset}
-            disabled={isDiscovering || !isConnected}
-            className="search-button"
-          >
-            {isDiscovering ? "🔄 Searching..." : "🔍 Search Asset"}
-          </button>
-        </div>
 
-        {/* Discovered Assets */}
-        {userAssets.length > 0 && (
-          <div className="discovered-assets">
-            <h4>🏆 Discovered Assets:</h4>
-            {userAssets.map((asset) => (
-              <div key={asset.id} className="asset-card">
-                <div className="asset-info">
-                  <strong>{asset.symbol}</strong> (ID: {asset.id})
-                  <br />
-                  <small>{asset.name} • {asset.decimals} decimals</small>
-                </div>
-                <div className="asset-actions">
-                  <button onClick={() => useAssetInPool(asset, 'asset1')} className="use-asset-btn">
-                    Use as Asset 1
-                  </button>
-                  <button onClick={() => useAssetInPool(asset, 'asset2')} className="use-asset-btn">
-                    Use as Asset 2
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
 
       {/* Rest of the component continues with the existing query sections... */}
       <div className="demo-section">

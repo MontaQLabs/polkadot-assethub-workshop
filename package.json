@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@polkadot/api": "^16.1.1",
+    "@polkadot/api": "^16.4.1",
     "@polkadot/extension-dapp": "^0.52.3",
     "ethers": "^6.14.3",
     "lucide-react": "^0.511.0",
